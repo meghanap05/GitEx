@@ -1,11 +1,5 @@
 pipeline {
     agent any
-
-    environment {
-        // CHANGE if you used different credential ID (only needed for private repo)
-        GIT_CREDENTIALS = '' // leave empty for public repo; or set 'github-ssh' or 'github-pat'
-    }
-
     stages {
         stage('Checkout') {
             steps {
