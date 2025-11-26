@@ -1,31 +1,31 @@
 pipeline {
     agent any
+
     stages {
+
         stage('Checkout') {
             steps {
                 echo "Cloning repository from GitHub..."
-                // If the repo is public, this will work without credentials:
                 git branch: 'main',
-                    url: 'https://github.com/meghanap05/GitEx.git',
-                    credentialsId: "${GIT_CREDENTIALS}"
+                    url: 'https://github.com/meghanap05/GitEx.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building with Maven: mvn clean package"
-                sh 'mvn -B clean package'
+                echo "Running Maven build..."
+                bat 'mvn -B clean package'
             }
         }
 
         stage('Run Tests') {
             steps {
-                echo "Running unit tests: mvn test"
-                sh 'mvn -B test'
+                echo "Running tests..."
+                bat 'mvn -B test'
             }
             post {
                 always {
-                    echo "Publishing JUnit test results to Jenkins"
+                    echo "Publishing test results..."
                     junit '**/target/surefire-reports/*.xml'
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
 
         stage('Archive') {
             steps {
-                echo "Archiving built artifacts (.jar/.war) from target/"
+                echo "Archiving build artifacts..."
                 archiveArtifacts artifacts: 'target/*.jar, target/*.war', fingerprint: true
             }
         }
@@ -41,13 +41,13 @@ pipeline {
 
     post {
         success {
-            echo "SUCCESS: Build and tests passed!"
+            echo "BUILD SUCCESS 🎉"
         }
         failure {
-            echo "FAILURE: Build or tests failed — check console and test report."
+            echo "BUILD FAILED ❌"
         }
         always {
-            echo "Pipeline finished — check console output and test reports."
+            echo "Pipeline finished."
         }
     }
 }
