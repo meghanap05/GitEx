@@ -6,12 +6,6 @@ pipeline {
         GIT_CREDENTIALS = '' // leave empty for public repo; or set 'github-ssh' or 'github-pat'
     }
 
-    tools {
-        // If Jenkins is configured with named tools, uncomment and set names:
-        // maven "Maven" 
-        // jdk "OpenJDK 17"
-    }
-
     stages {
         stage('Checkout') {
             steps {
